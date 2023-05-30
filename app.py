@@ -22,6 +22,11 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
+@app.route('/', methods=['GET'])
+def main_page():
+    return render_template('main.html')
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
