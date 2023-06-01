@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -25,6 +25,16 @@ class Tasks(db.Model):
     title = db.Column(db.String(100))
     status = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+def login_required(route):
+    def decorated_route(*args, **kwargs):
+        if not session.get('username'):
+            return redirect('/login')
+
+        return route(*args, **kwargs)
+
+    return decorated_route
 
 
 @app.route('/', methods=['GET'])
